@@ -115,6 +115,7 @@ const Home = (): JSX.Element => {
 								error={userIdError}
 								errorMessage={userIdErrorMessage}
 								onChange={handleUserIdChange}
+								data-cy='input-userId'
 							/>
 							<FormInput
 								name='input-password'
@@ -124,20 +125,24 @@ const Home = (): JSX.Element => {
 								error={passwordError}
 								errorMessage={passwordErrorMessage}
 								onChange={handlePasswordChange}
+								data-cy='input-password'
 							/>
 							<FormInput
 								name='input-remember_me'
 								label='Ingat Saya!'
 								type='checkbox'
 								onChange={handleRememberMeChange}
+								data-cy='input-remember_me'
 							/>
 						</div>
-						<FormButton type='submit'>Login</FormButton>
+						<FormButton type='submit' data-cy='btn-login'>
+							Login
+						</FormButton>
 					</form>
 					<span className='my-4 text-center text-sm font-semibold'>atau</span>
 					<span className='text-center text-sm font-semibold'>
 						Belum punya akun?
-						<Link className='text-[#4BFF72]' href='/register'>
+						<Link className='text-[#4BFF72]' href='/register' data-cy='btn-register'>
 							{' '}
 							Daftar
 						</Link>
