@@ -8,9 +8,6 @@ import clsx from 'clsx';
 /** Formik */
 import { FormikProps, useFormik } from 'formik';
 /** Next */
-import { NextFont } from 'next/dist/compiled/@next/font';
-import { Inter } from 'next/font/google';
-import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -30,8 +27,6 @@ import { useToast } from '@/hooks';
 import RavelLogo from 'public/assets/images/ravel-logo.svg';
 /** Types */
 import { LoginForm, UserAuthentication } from '@/types';
-
-const inter: NextFont = Inter({ subsets: ['latin'] });
 
 /**
  * Login page.
@@ -145,7 +140,7 @@ const Login = (): JSX.Element => {
 	};
 
 	return (
-		<main className={clsx('grid h-screen w-screen grid-cols-1 lg:grid-cols-2', inter.className)}>
+		<main className={clsx('grid h-screen w-screen grid-cols-1 lg:grid-cols-2')}>
 			<div className='bg-login hidden bg-cover lg:block' />
 			<div className='flex items-center justify-center'>
 				<FormBox className='flex w-4/5 flex-col gap-y-4'>
