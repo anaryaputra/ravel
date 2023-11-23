@@ -12,5 +12,4 @@ export default function App({ Component, pageProps }: AppProps) {
 			<Component {...pageProps} />
 		</React.Fragment>
 	);
-	// return <Component {...pageProps} />;
 }
