@@ -2,7 +2,7 @@
  * Required external modules
  */
 /** Axios */
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 /** Clsx */
 import clsx from 'clsx';
 /** Formik */
@@ -26,7 +26,7 @@ import { useToast } from '@/hooks';
 /** Images */
 import RavelLogo from 'public/assets/images/ravel-logo.svg';
 /** Types */
-import { LoginForm, UserAuthentication } from '@/types';
+import { LoginForm, UserAuthenticationData } from '@/types';
 
 /**
  * Login page.
@@ -58,13 +58,14 @@ const Login = (): JSX.Element => {
 		enableReinitialize: true,
 		validationSchema: loginValidationSchema,
 		onSubmit: (values) => {
-			login(values.userId, values.password).then((res) => {
-				toast.dismiss();
+			login(values.userId, values.password)
+				.then(({ data }) => {
+					toast.dismiss();
 
-				if (res.status === 'berhasil login!') {
-					const accessToken: string = res.data.accessToken as string;
+					const userAuthenticationData: UserAuthenticationData = data.data;
+					const accessToken: string = userAuthenticationData.accessToken as string;
 					const user: string = JSON.stringify({
-						name: res.data.name,
+						name: userAuthenticationData.name,
 						userId: values.userId,
 						password: values.password,
 					});
@@ -80,24 +81,40 @@ const Login = (): JSX.Element => {
 						});
 					}
 
-					useToast(`Selamat Datang, ${res.data.name}`, 'success');
+					useToast(`Selamat Datang, ${userAuthenticationData.name}`, 'success');
+				})
+				.catch((error) => {
+					toast.dismiss();
 
-					setTimeout(() => {
-						router.push('/landing-page');
-					}, 2000);
-				} else if (res.status === 'unauthorized') {
-					const errorMessage = 'Id & Password Salah';
-
-					formik.setErrors({
-						userId: errorMessage,
-						password: errorMessage,
-					});
-
-					useToast(errorMessage, 'error');
-				} else {
-					useToast('Terjadi kesalahan!', 'error');
-				}
-			});
+					if (error.response) {
+						console.log(error.response);
+						/**
+						 * The request was made and the server responded with a status code
+						 * that falls out of the range of 2xx
+						 */
+						if (error.response.data.message === 'User id sudah ada, coba yang lain') {
+							const errorMessage = 'User ID telah digunakan';
+							formik.setErrors({
+								userId: errorMessage,
+							});
+							useToast(errorMessage, 'error');
+						}
+					} else if (error.request) {
+						/**
+						 * The request was made but no response was received
+						 * `error.request` is an instance of XMLHttpRequest in the browser
+						 * and an instance of http.ClientRequest in node.js
+						 */
+						console.error(error.request);
+						useToast('Request error', 'error');
+					} else {
+						/**
+						 * Something happened in setting up the request that triggered an Error
+						 */
+						console.error('Error', error.message);
+						useToast('Unexpected error', 'error');
+					}
+				});
 		},
 	});
 
@@ -105,38 +122,17 @@ const Login = (): JSX.Element => {
 	 * Login user.
 	 * @param { string } userId User account's ID.
 	 * @param { string } password User account's password.
-	 * @returns { Promise<UserAuthentication> } Login promise with user authentication data
+	 * @returns { Promise<UserAuthentication> } Login promise axios response
 	 */
-	const login = async (userId: string, password: string): Promise<UserAuthentication> => {
-		try {
-			toast.loading('Mengautentikasi akun...');
+	const login = async (userId: string, password: string): Promise<AxiosResponse> => {
+		toast.loading('Mengautentikasi akun...');
 
-			const { data } = await axios.post('https://bio-code.cyclic.app/api/v1/auam/login', {
-				userId: userId,
-				password: password,
-			});
+		const response = await axios.post(`${process.env.API_ENDPOINT}/auam/login`, {
+			userId: userId,
+			password: password,
+		});
 
-			return data;
-		} catch (error: any) {
-			if (axios.isAxiosError(error)) {
-				return {
-					data: {
-						accessToken: null,
-						name: null,
-					},
-					status: 'unauthorized',
-				};
-			} else {
-				console.error(error);
-				return {
-					data: {
-						accessToken: null,
-						name: null,
-					},
-					status: 'unexpected error',
-				};
-			}
-		}
+		return response;
 	};
 
 	return (
@@ -185,7 +181,9 @@ const Login = (): JSX.Element => {
 								onChange={formik.handleChange}
 								data-cy='input-remember_me'
 							/>
-							<FormButton type='submit'>Login</FormButton>
+							<FormButton type='submit' data-cy='btn-login'>
+								Login
+							</FormButton>
 						</form>
 					</div>
 					<div className='flex flex-col gap-y-3'>

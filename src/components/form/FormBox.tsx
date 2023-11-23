@@ -13,7 +13,10 @@ import React from 'react';
  */
 const FormBox = ({ className, children, ...props }: React.ComponentPropsWithRef<'div'>): JSX.Element => (
 	<div
-		className={clsx(className, 'flex flex-col rounded-[49px] px-8 py-16 shadow-[0_4px_4px_0_rgba(0,0,0,0.25)]')}
+		className={clsx(
+			className,
+			'flex flex-col rounded-[49px] bg-white px-8 py-16 shadow-[0_4px_4px_0_rgba(0,0,0,0.25)]'
+		)}
 		{...props}
 	>
 		{children}

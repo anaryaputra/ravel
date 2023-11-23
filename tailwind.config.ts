@@ -18,6 +18,7 @@ const config: Config = {
 			},
 			backgroundImage: {
 				login: "url('/assets/images/login-background.jpg')",
+				logo: "url('/assets/images/ravel-logo-square.png')",
 			},
 		},
 	},

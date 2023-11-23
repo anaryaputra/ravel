@@ -8,6 +8,16 @@ export interface UserAuthenticationData {
 	name: string | null;
 }
 
+export interface UserRegistration {
+	data: UserRegistrationData;
+	status: string;
+}
+
+export interface UserRegistrationData {
+	name: string;
+	userId: string;
+}
+
 export interface UserCookie {
 	name: string;
 	userId: string;
