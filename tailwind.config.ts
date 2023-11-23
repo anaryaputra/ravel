@@ -6,11 +6,18 @@ const config: Config = {
 		'./src/components/**/*.{js,ts,jsx,tsx,mdx}',
 		'./src/app/**/*.{js,ts,jsx,tsx,mdx}',
 	],
+	important: '#__next',
 	theme: {
 		extend: {
+			colors: {
+				accent: {
+					DEFAULT: '#0CC03E',
+					light: '#2dcf5b',
+				},
+				highlight: '#4BFF72',
+			},
 			backgroundImage: {
-				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-				'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+				login: "url('/assets/images/login-background.jpg')",
 			},
 		},
 	},
