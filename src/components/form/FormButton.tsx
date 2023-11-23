@@ -1,12 +1,24 @@
+/**
+ * Required external modules
+ */
+/** Material UI */
+import { Button, ButtonProps } from '@mui/material';
+/** React */
 import React from 'react';
 
-const FormButton = ({ children, ...props }: React.ComponentPropsWithoutRef<'button'>): JSX.Element => (
-	<button
-		className='animate rounded-[5px] bg-[#0CC03E] py-6 text-2xl font-bold normal-case text-white hover:bg-[#2dcf5b]'
+/**
+ * Form button component.
+ * @param { ButtonProps } ButtonProps An object of button component props.
+ * @returns { JSX.Element } JSX.Element - Form button component.
+ */
+const FormButton = ({ children, ...props }: ButtonProps): JSX.Element => (
+	<Button
+		className='bg-accent hover:bg-accent-light rounded-[5px] py-6 text-2xl font-bold normal-case'
+		variant='contained'
 		{...props}
 	>
 		{children}
-	</button>
+	</Button>
 );
 
 export default FormButton;
