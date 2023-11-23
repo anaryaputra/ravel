@@ -145,73 +145,68 @@ const Login = (): JSX.Element => {
 	};
 
 	return (
-		<React.Fragment>
-			<Head>
-				<title>Ravel</title>
-			</Head>
-			<main className={clsx('grid h-screen w-screen grid-cols-1 lg:grid-cols-2', inter.className)}>
-				<div className='bg-login hidden bg-cover lg:block' />
-				<div className='flex items-center justify-center'>
-					<FormBox className='flex w-4/5 flex-col gap-y-4'>
-						<div className='flex justify-center'>
-							<Image src={RavelLogo} height={101} width={309} alt='Ravel Logo' priority />
-						</div>
-						<div className='flex flex-col gap-y-4'>
-							<h1 className='text-2xl font-semibold'>Masuk</h1>
-							<form className='flex flex-col gap-y-6' onSubmit={formik.handleSubmit} noValidate>
-								<FormTextField
-									id='userId'
-									label='User ID'
-									name='userId'
-									type='text'
-									required
-									defaultValue={formik.values.userId}
-									value={formik.values.userId}
-									onChange={formik.handleChange}
-									onBlur={formik.handleBlur}
-									error={formik.touched.userId && Boolean(formik.errors.userId)}
-									helperText={formik.touched.userId && formik.errors.userId}
-									data-cy='input-userId'
-								/>
-								<FormTextField
-									id='password'
-									label='Password'
-									name='password'
-									type='password'
-									required
-									defaultValue={formik.values.password}
-									value={formik.values.password}
-									onChange={formik.handleChange}
-									onBlur={formik.handleBlur}
-									error={formik.touched.password && Boolean(formik.errors.password)}
-									helperText={formik.touched.password && formik.errors.password}
-									data-cy='input-password'
-								/>
-								<FormCheckbox
-									id='rememberMe'
-									name='rememberMe'
-									label='Ingat Saya!'
-									onChange={formik.handleChange}
-									data-cy='input-remember_me'
-								/>
-								<FormButton type='submit'>Login</FormButton>
-							</form>
-						</div>
-						<div className='flex flex-col gap-y-3'>
-							<span className='text-center text-sm font-semibold'>atau</span>
-							<span className='text-center text-sm font-semibold text-[#B5B5B5]'>
-								Belum punya akun?
-								<Link className='text-[#4BFF72]' href='/register' data-cy='btn-register'>
-									{' '}
-									Daftar
-								</Link>
-							</span>
-						</div>
-					</FormBox>
-				</div>
-				<Toaster />
-			</main>
-		</React.Fragment>
+		<main className={clsx('grid h-screen w-screen grid-cols-1 lg:grid-cols-2', inter.className)}>
+			<div className='bg-login hidden bg-cover lg:block' />
+			<div className='flex items-center justify-center'>
+				<FormBox className='flex w-4/5 flex-col gap-y-4'>
+					<div className='flex justify-center'>
+						<Image src={RavelLogo} height={101} width={309} alt='Ravel Logo' priority />
+					</div>
+					<div className='flex flex-col gap-y-4'>
+						<h1 className='text-2xl font-semibold'>Masuk</h1>
+						<form className='flex flex-col gap-y-6' onSubmit={formik.handleSubmit} noValidate>
+							<FormTextField
+								id='userId'
+								label='User ID'
+								name='userId'
+								type='text'
+								required
+								defaultValue={formik.values.userId}
+								value={formik.values.userId}
+								onChange={formik.handleChange}
+								onBlur={formik.handleBlur}
+								error={formik.touched.userId && Boolean(formik.errors.userId)}
+								helperText={formik.touched.userId && formik.errors.userId}
+								data-cy='input-userId'
+							/>
+							<FormTextField
+								id='password'
+								label='Password'
+								name='password'
+								type='password'
+								required
+								defaultValue={formik.values.password}
+								value={formik.values.password}
+								onChange={formik.handleChange}
+								onBlur={formik.handleBlur}
+								error={formik.touched.password && Boolean(formik.errors.password)}
+								helperText={formik.touched.password && formik.errors.password}
+								data-cy='input-password'
+							/>
+							<FormCheckbox
+								id='rememberMe'
+								name='rememberMe'
+								label='Ingat Saya!'
+								onChange={formik.handleChange}
+								data-cy='input-remember_me'
+							/>
+							<FormButton type='submit'>Login</FormButton>
+						</form>
+					</div>
+					<div className='flex flex-col gap-y-3'>
+						<span className='text-center text-sm font-semibold'>atau</span>
+						<span className='text-center text-sm font-semibold text-[#B5B5B5]'>
+							Belum punya akun?
+							<Link className='text-[#4BFF72]' href='/register' data-cy='btn-register'>
+								{' '}
+								Daftar
+							</Link>
+						</span>
+					</div>
+				</FormBox>
+			</div>
+			<Toaster />
+		</main>
 	);
 };
 
