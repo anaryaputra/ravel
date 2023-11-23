@@ -7,5 +7,9 @@ const withPWA = require('next-pwa')({
 });
 
 module.exports = withPWA({
+	env: {
+		API_HOST: process.env.API_HOST,
+		API_ENDPOINT: process.env.API_ENDPOINT,
+	},
 	reactStrictMode: true,
 });
