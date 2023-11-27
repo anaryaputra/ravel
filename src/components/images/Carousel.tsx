@@ -18,7 +18,7 @@ const Carousel = ({ children, options }: CarouselProps): JSX.Element => {
 	return (
 		<div>
 			<div className='overflow-hidden' ref={emblaRef}>
-				<div className='flex justify-center'>{children}</div>
+				<div className='flex lg:justify-center'>{children}</div>
 			</div>
 		</div>
 	);
