@@ -17,6 +17,7 @@
 			"@/*": ["./src/*"],
 			"@/components": ["./src/components"],
 			"@/hooks": ["./src/hooks"],
+			"@/services": ["./src/services"],
 			"@/styles": ["./src/styles"],
 			"@/types": ["./src/types"],
 			"@/utils": ["./src/utils"]

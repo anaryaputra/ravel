@@ -7,6 +7,8 @@ import axios, { AxiosResponse } from 'axios';
 import clsx from 'clsx';
 /** Formik */
 import { FormikProps, useFormik } from 'formik';
+/** Lodash */
+import upperFirst from 'lodash/upperFirst';
 /** Next */
 import Image from 'next/image';
 import Link from 'next/link';
@@ -68,34 +70,35 @@ const Login = (): JSX.Element => {
 						name: userAuthenticationData.name,
 						userId: values.userId,
 						password: values.password,
+						rememberMe: values.rememberMe,
 					});
 
-					if (values.rememberMe) {
-						setCookie(null, 'accessToken', accessToken, {
-							maxAge: 30 * 24 * 60 * 60,
-							path: '/',
-						});
-						setCookie(null, 'user', user, {
-							maxAge: 30 * 24 * 60 * 60,
-							path: '/',
-						});
-					}
+					setCookie(null, 'accessToken', accessToken, {
+						maxAge: 30 * 24 * 60 * 60,
+						path: '/',
+					});
+					setCookie(null, 'user', user, {
+						maxAge: 30 * 24 * 60 * 60,
+						path: '/',
+					});
 
-					useToast(`Selamat Datang, ${userAuthenticationData.name}`, 'success');
+					useToast(`Selamat Datang, ${upperFirst(userAuthenticationData.name as string)}`, 'success');
+
+					router.push('/landing-page');
 				})
 				.catch((error) => {
 					toast.dismiss();
 
 					if (error.response) {
-						console.log(error.response);
 						/**
 						 * The request was made and the server responded with a status code
 						 * that falls out of the range of 2xx
 						 */
-						if (error.response.data.message === 'User id sudah ada, coba yang lain') {
-							const errorMessage = 'User ID telah digunakan';
+						if (error.response.data.error === 'Username & Password salah') {
+							const errorMessage = 'Id & password salah';
 							formik.setErrors({
 								userId: errorMessage,
+								password: errorMessage,
 							});
 							useToast(errorMessage, 'error');
 						}

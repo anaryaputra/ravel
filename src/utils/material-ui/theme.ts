@@ -16,6 +16,14 @@ export const theme: Theme = createTheme({
 			xl: 1280,
 		},
 	},
+	palette: {
+		primary: {
+			main: '#FFFFFF',
+		},
+		text: {
+			primary: '#000000',
+		},
+	},
 	typography: {
 		fontFamily: INTER.style.fontFamily,
 	},

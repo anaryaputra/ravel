@@ -1,4 +1,4 @@
 /** Material UI */
-export * from './material-ui/theme';
+export * from '@/utils/material-ui/theme';
 /** Next */
-export * from './next/fonts';
+export * from '@/utils/next/fonts';

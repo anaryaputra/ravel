@@ -13,7 +13,7 @@ import React from 'react';
  */
 const FormButton = ({ children, ...props }: ButtonProps): JSX.Element => (
 	<Button
-		className='bg-accent hover:bg-accent-light rounded-xl py-6 text-2xl font-bold normal-case'
+		className='bg-accent hover:bg-accent-light rounded-xl py-6 text-2xl font-bold normal-case text-white'
 		variant='contained'
 		{...props}
 	>

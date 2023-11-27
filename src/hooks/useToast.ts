@@ -20,6 +20,7 @@ const useToast = (message: string, type: 'success' | 'error') => {
 					color: '#FFFFFF',
 					fontWeight: 600,
 					padding: '24px 40px',
+					textAlign: 'center',
 				},
 			});
 		case 'error':
@@ -31,6 +32,7 @@ const useToast = (message: string, type: 'success' | 'error') => {
 					color: '#FFFFFF',
 					fontWeight: 600,
 					padding: '24px 40px',
+					textAlign: 'center',
 				},
 			});
 		default:
