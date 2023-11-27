@@ -17,11 +17,3 @@ export interface UserRegistrationData {
 	name: string;
 	userId: string;
 }
-
-export interface UserCookie {
-	name: string;
-	userId: string;
-	password: string;
-}
-
-export type UserAccessTokenCookie = string;

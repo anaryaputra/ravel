@@ -9,6 +9,9 @@ const config: Config = {
 	important: '#__next',
 	theme: {
 		extend: {
+			aspectRatio: {
+				'rectangle-thumbnail': '220/159',
+			},
 			colors: {
 				accent: {
 					DEFAULT: '#0CC03E',
