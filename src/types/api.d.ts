@@ -1,22 +1,24 @@
 /**
  * Required external modules
  */
+/** SWR */
+import { SWRResponse } from 'swr';
+import { TriggerWithArgs } from 'swr/mutation';
 /** Types */
-import { NewTour, TopTours, TopTour } from '@/types';
+import { NewTour, TopTours, TopTour, Tour } from '@/types';
 
 export interface ApiResponse<T = any> {
-	data: ApiResponseData<T>;
+	data: T | null;
 	isLoading: boolean;
+	results?: number | undefined;
 	status: boolean;
 }
-export type ApiResponseData<T = any> = T | null | undefined;
-
-export interface NewTourResponse {
-	data: ApiResponseData<NewTour>;
-	status: string;
+export interface MutationApiResponse<T = any> extends ApiResponse<T> {
+	trigger?: TriggerWithArgs<TourApiResponse<T>, Error, Key, AxiosRequestConfig<any>> | undefined;
 }
 
-export interface Top5TourResponse {
-	data: ApiResponseData<TopTour[]>;
+export interface TourApiResponse<T = any> {
+	data: T;
+	results?: number | undefined;
 	status: string;
 }

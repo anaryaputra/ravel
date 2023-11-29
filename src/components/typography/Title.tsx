@@ -16,7 +16,7 @@ import { TitleProps } from '@/types';
 const Title = ({ as, children, className, size = 'base', ...props }: TitleProps): JSX.Element => {
 	const getTailwindTextSize = () => {
 		switch (size) {
-			case 'xl':
+			case '2xl':
 				return 'text-[64px]';
 			case 'xl':
 				return 'text-5xl';

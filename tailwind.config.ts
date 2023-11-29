@@ -10,7 +10,9 @@ const config: Config = {
 	theme: {
 		extend: {
 			aspectRatio: {
+				jumbotron: '1280/471',
 				'rectangle-thumbnail': '220/159',
+				'rectangle-thumbnail-small': '121/99',
 			},
 			colors: {
 				accent: {

@@ -20,24 +20,23 @@ const Top5Tours = ({ ...props }: React.ComponentPropsWithRef<'section'>): JSX.El
 	const { data, isLoading } = getTop5Tour();
 
 	return (
-		<section className='flex flex-col gap-y-11 py-14' {...props}>
+		<section className='flex flex-col gap-y-12' {...props}>
 			<Title className='text-center' as='h3' size='md'>
 				<span className='text-[#4BFF72]'>Explore</span> Tempat Lainnya
 			</Title>
-			<div className='bg-[#FAFAFA] px-7 py-16 lg:px-14'>
+			<div className='bg-[#FAFAFA] px-7 py-12 lg:px-14'>
 				<Carousel options={{ align: 'center', loop: true }}>
-					{!isLoading && data !== null ? (
+					{!isLoading && data ? (
 						<React.Fragment>
-							{data?.map((destination, index) => (
-								<div
+							{data.map((destination, index) => (
+								<Link
 									key={index}
-									id={`header-top-tours-${index}`}
+									id={`header-top-tour-${index}`}
 									className='mr-[40px] flex-[0_0_auto] lg:mr-[60px]'
+									data-cy={`header-top-tour-${index}`}
+									href={`/${destination.name}`}
 								>
-									<Link
-										className='flex min-w-[160px] max-w-[160px] flex-col items-center gap-y-1'
-										href={`/${destination.name}`}
-									>
+									<div className='flex min-w-[160px] max-w-[160px] flex-col items-center gap-y-4'>
 										<Thumbnail
 											src={destination.image}
 											alt={`${destination.name} Image`}
@@ -52,15 +51,15 @@ const Top5Tours = ({ ...props }: React.ComponentPropsWithRef<'section'>): JSX.El
 										<Description className='line-clamp-3 text-center'>
 											{destination.description}
 										</Description>
-									</Link>
-								</div>
+									</div>
+								</Link>
 							))}
 						</React.Fragment>
 					) : (
 						<React.Fragment>
 							{[...Array(5)].map((e, i) => (
 								<div key={`top-tours-skeleton-${i}`} className='mr-[40px] flex-[0_0_auto] lg:mr-[60px]'>
-									<div className='flex flex-col items-center gap-y-1'>
+									<div className='flex flex-col items-center gap-y-5'>
 										<ThumbnailSkeleton height={160} width={160} type='square' />
 										<TextSkeleton className='w-1/2' type='single' textSize='text-sm' />
 										<TextSkeleton type='grouped' textSize='text-sm' wrapped lines={3} />
