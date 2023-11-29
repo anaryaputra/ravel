@@ -87,8 +87,8 @@ const OtherPlaces = (): JSX.Element => {
 					<Title as='h4'>Hasil Pencarian mu:</Title>
 					{!isLoading && data ? (
 						data.map((tour, index) => (
-							<React.Fragment>
-								<Link key={index} href={`/tours/${tour._id}`}>
+							<React.Fragment key={`search-result-${index}`}>
+								<Link href={`/tours/${tour._id}`}>
 									<Overview
 										data={tour}
 										index={index}
@@ -103,8 +103,8 @@ const OtherPlaces = (): JSX.Element => {
 					) : (
 						<React.Fragment>
 							{[...Array(2)].map((e, i) => (
-								<React.Fragment>
-									<div key={i} className='flex gap-12'>
+								<React.Fragment key={`search-result-skeleton-${i}`}>
+									<div className='flex gap-12'>
 										<ThumbnailSkeleton className='max-w-[242px]' type='rectangle' fill />
 										<div className='flex w-full flex-col justify-between gap-y-4'>
 											<div className='flex w-full flex-col gap-y-2'>
