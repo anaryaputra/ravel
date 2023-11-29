@@ -2,7 +2,7 @@
  * Required external modules
  */
 /** Axios */
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 /** Nookies */
 import { parseCookies } from 'nookies';
 
@@ -24,8 +24,18 @@ export const axiosClient = axios.create({
  * @param { string } endpoint API endpoint
  * @returns
  */
-export const axiosFetcher = async (endpoint: string): Promise<any> => {
+export const getFetcher = async (endpoint: string): Promise<any> => {
 	return axiosClient.get(endpoint).then((response) => {
+		if (!response.data) {
+			throw Error(response.data.message);
+		}
+
+		return response.data;
+	});
+};
+
+export const baseFetcher = async (url: string, { arg }: { arg: AxiosRequestConfig }) => {
+	return await axiosClient(arg).then((response) => {
 		if (!response.data) {
 			throw Error(response.data.message);
 		}

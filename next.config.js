@@ -12,7 +12,7 @@ module.exports = withPWA({
 		API_ENDPOINT: process.env.API_ENDPOINT,
 	},
 	images: {
-		domains: ['images.unsplash.com'],
+		domains: ['images.unsplash.com', 'plus.unsplash.com', 'www.https'],
 	},
 	reactStrictMode: true,
 });

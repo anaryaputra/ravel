@@ -12,6 +12,7 @@ const Footer = (): JSX.Element => (
 	<footer
 		id='f-ravel'
 		className='flex flex-col items-center gap-y-3 bg-[#333333] py-6 text-white lg:h-[103px] lg:flex-row'
+		data-cy='f-ravel'
 	>
 		<div className='left-14 flex flex-col lg:absolute'>
 			<span className='text-center text-4xl font-bold'>Ravel</span>

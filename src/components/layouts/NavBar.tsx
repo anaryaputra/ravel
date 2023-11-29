@@ -1,6 +1,8 @@
 /**
  * Required external modules
  */
+/** Clsx */
+import clsx from 'clsx';
 /** Lodash */
 import upperFirst from 'lodash/upperFirst';
 /** Material UI */
@@ -80,7 +82,12 @@ const NavBar = (): JSX.Element => {
 			<div className='flex grow'>
 				<AppBar className='border-b border-[#E3E3E3] shadow-none' position='static'>
 					<Toolbar className='flex justify-between bg-white px-7 py-3 lg:relative lg:h-[88px] lg:justify-center lg:py-6'>
-						<Link className='flex gap-x-3 lg:absolute lg:left-14' href='/landing-page' data-cy='h-logo'>
+						<Link
+							id='h-logo'
+							className='flex gap-x-3 lg:absolute lg:left-14'
+							href='/landing-page'
+							data-cy='h-logo'
+						>
 							<Image className='aspect-square' src={RavelLogoSrc} height={40} alt='Ravel Logo' />
 							<div className='justify-center lg:flex lg:flex-col' hidden>
 								<span className='text-xs font-bold'>Ravel</span>
@@ -89,20 +96,41 @@ const NavBar = (): JSX.Element => {
 						</Link>
 						<div className='hidden gap-4 lg:flex'>
 							<Link
-								className='text-xs font-semibold text-[#4BFF72]'
+								id='h-nav-home'
+								className={clsx(
+									router.pathname === '/landing-page' && 'text-[#4BFF72]',
+									'text-xs font-semibold'
+								)}
 								href='/landing-page'
 								data-cy='h-nav-home'
 							>
 								Home
 							</Link>
-							<Link className='text-xs font-semibold' href='/other-places' data-cy='h-nav-other-place'>
+							<Link
+								id='h-nav-other-place'
+								className={clsx(
+									router.pathname === '/other-places' && 'text-[#4BFF72]',
+									'text-xs font-semibold'
+								)}
+								href='/other-places'
+								data-cy='h-nav-other-place'
+							>
 								Tempat Lain
 							</Link>
-							<Link className='text-xs font-semibold' href='/testimony' data-cy='h-nav-testimoni'>
+							<Link
+								id='h-nav-testimoni'
+								className={clsx(
+									router.pathname === '/testimony' && 'text-[#4BFF72]',
+									'text-xs font-semibold'
+								)}
+								href='/testimony'
+								data-cy='h-nav-testimoni'
+							>
 								Testimoni
 							</Link>
 						</div>
 						<IconButton
+							id='h-profile'
 							className='hidden items-center gap-x-2 lg:absolute lg:right-14 lg:flex'
 							aria-label='desktop-menu'
 							aria-controls='desktop-menu'

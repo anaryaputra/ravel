@@ -15,6 +15,7 @@ import { ThumbnailProps } from '@/types';
  */
 const Thumbnail = ({
 	className,
+	size,
 	type = 'rectangle',
 	wrapperProps: { wrapperClassName, ...wrapperProps },
 	...props
@@ -24,7 +25,10 @@ const Thumbnail = ({
 			{...wrapperProps}
 			className={clsx(
 				wrapperClassName,
-				type === 'rectangle' ? 'aspect-rectangle-thumbnail' : 'aspect-square',
+				type === 'square' && 'aspect-square',
+				type === 'rectangle' && size === 'large'
+					? 'aspect-rectangle-thumbnail'
+					: 'aspect-rectangle-thumbnail-small',
 				'relative h-auto w-full overflow-hidden'
 			)}
 		>

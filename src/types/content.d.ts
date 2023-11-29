@@ -1,18 +1,14 @@
-/** New Tour */
-export interface NewTour {
+/** Base Tour */
+export interface BaseTour {
 	_id: string;
-	__V: number;
 	description: string;
 	image: string;
 	name: string;
-	price: number;
 	rating: number;
-	slug: string;
 }
-/** Top Tour */
-export interface TopTour {
-	_id: string;
-	description: string;
-	image: string;
-	name: string;
+/** Tour */
+export interface Tour extends BaseTour {
+	__V?: number | undefined;
+	price: number;
+	slug: string;
 }

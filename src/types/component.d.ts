@@ -19,6 +19,7 @@ export interface CarouselProps extends React.PropsWithChildren {
 }
 /** Thumbnail */
 export interface ThumbnailProps extends ImageProps {
+	size?: ThumbnailSize | undefined;
 	type?: ThumbnailType;
 	wrapperProps: WrapperProps;
 }
@@ -26,6 +27,7 @@ export interface WrapperProps extends React.ComponentPropsWithRef<'figure'> {
 	wrapperClassName?: string | undefined;
 }
 export type ThumbnailType = 'rectangle' | 'square';
+export type ThumbnailSize = 'large' | 'small';
 
 /**
  * Layouts
@@ -33,8 +35,11 @@ export type ThumbnailType = 'rectangle' | 'square';
 /** Overview */
 export interface OverviewProps<T = any> extends React.ComponentPropsWithRef<'section'> {
 	data: T | null;
-	sectionTitle?: SectionTitle;
+	index?: number | undefined;
 	isLoading: boolean;
+	sectionTitle?: SectionTitle;
+	showPrice?: boolean;
+	thumbnailSize?: ThumbnailSize;
 }
 export type SectionTitle = string | React.ReactElement | undefined;
 
