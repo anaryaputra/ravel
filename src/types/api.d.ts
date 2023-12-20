@@ -1,24 +1,40 @@
 /**
- * Required external modules
+ * Requests
  */
-/** SWR */
-import { SWRResponse } from 'swr';
-import { TriggerWithArgs } from 'swr/mutation';
-/** Types */
-import { NewTour, TopTours, TopTour, Tour } from '@/types';
-
-export interface ApiResponse<T = any> {
-	data: T | null;
-	isLoading: boolean;
-	results?: number | undefined;
-	status: boolean;
+/** Auam Endpoints */
+/** Login API */
+export interface LoginApiRequestBody {
+	userId: string;
+	password: string;
 }
-export interface MutationApiResponse<T = any> extends ApiResponse<T> {
-	trigger?: TriggerWithArgs<TourApiResponse<T>, Error, Key, AxiosRequestConfig<any>> | undefined;
+/** Register API */
+export interface RegisterApiRequestBody {
+	userId: string;
+	name: string;
+	password: string;
 }
 
-export interface TourApiResponse<T = any> {
-	data: T;
+/**
+ * Responses
+ */
+/** Base API response */
+export interface ApiResponse<Data = any> {
+	data?: Data | undefined;
+	error?: any | undefined;
+	message?: string | undefined;
 	results?: number | undefined;
 	status: string;
+}
+/** Auam Endpoints */
+/** Login API */
+export interface LoginApiResponseData {
+	id: string;
+	name: string;
+	accessToken: string;
+	sessionToken: string;
+}
+/** Register API */
+export interface RegisterApiResponseData {
+	name: string;
+	userId: string;
 }

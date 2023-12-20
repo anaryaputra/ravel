@@ -8,14 +8,14 @@ import { Skeleton } from '@mui/material';
 /** React */
 import React from 'react';
 /** Types */
-import { ThumbnailSkeleton } from '@/types';
+import { ThumbnailSkeletonProps } from '@/types';
 
 /**
  * Thumbnail skeleton component.
  * @param { ThumbnailSkeletonProps } ThumbnailSkeletonProps An object of skeleton props.
  * @returns { JSX.Element } JSX.Element - Thumbnail skeleton component
  */
-const ThumbnailSkeleton = ({ className, fill, type = 'rectangle', ...props }: ThumbnailSkeleton): JSX.Element => (
+const ThumbnailSkeleton = ({ className, fill, type = 'rectangle', ...props }: ThumbnailSkeletonProps): JSX.Element => (
 	<Skeleton
 		{...props}
 		className={clsx(

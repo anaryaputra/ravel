@@ -12,7 +12,7 @@ import React from 'react';
  * @returns { JSX.Element } JSX.Element - Description component.
  */
 const Description = ({ children, className, ...props }: React.ComponentPropsWithRef<'p'>): JSX.Element => (
-	<p className={clsx(className, 'text-sm font-light')} {...props}>
+	<p className={clsx(className, 'font-light')} {...props}>
 		{children}
 	</p>
 );

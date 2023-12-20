@@ -1,13 +1,10 @@
-export interface Cookies {
-	accessToken: string | null;
-	user: UserCookie | null;
-}
-
 export interface UserCookie {
-	name: string;
+	id: string;
 	userId: string;
-	password: string;
-	rememberMe: string;
+	name: string;
+	rememberMe: boolean;
 }
 
 export type AccessTokenCookie = string;
+
+export type SessionTokenCookie = string;
