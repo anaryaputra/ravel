@@ -5,12 +5,14 @@
 import clsx from 'clsx';
 /** Material UI */
 import { useMediaQuery } from '@mui/material';
+/** Prisma */
+import { Tour } from '@prisma/client';
 /** React */
 import React from 'react';
 /** Components */
 import { Description, TextSkeleton, Thumbnail, ThumbnailSkeleton, Title } from '@/components';
 /** Types */
-import { Tour, OverviewProps } from '@/types';
+import { OverviewProps } from '@/types';
 
 /**
  * Overview layout component.
@@ -50,24 +52,16 @@ const Overview = ({
 					fill
 				/>
 			)}
-			<div className='flex w-full flex-col justify-between gap-y-4'>
-				{typeof sectionTitle === 'string' ? (
-					<Title as='h2' size='md'>
-						{sectionTitle}
-					</Title>
-				) : (
-					sectionTitle
-				)}
+			<div className={clsx('flex w-full flex-col gap-y-4', showPrice && 'justify-between')}>
+				{typeof sectionTitle === 'string' ? <Title as='h5'>{sectionTitle}</Title> : sectionTitle}
 				<div className='flex w-full flex-col gap-y-2'>
 					{!isLoading && data ? (
 						<React.Fragment>
-							<Title
-								id={index ? `tour-title-${index}` : 'tour-title'}
-								as='h3'
-								size='sm'
-								data-cy={index ? `tour-title-${index}` : 'tour-title'}
-							>
-								{data.name},{' '}
+							<div className='font-bold'>
+								<span
+									id={index ? `tour-title-${index}` : 'tour-title'}
+									data-cy={index ? `tour-title-${index}` : 'tour-title'}
+								>{`${data.name}, `}</span>
 								<span
 									id={index ? `tour-slug-${index}` : 'tour-slug'}
 									className='text-[#4BFF72]'
@@ -75,7 +69,7 @@ const Overview = ({
 								>
 									{data.slug}
 								</span>
-							</Title>
+							</div>
 							<Description
 								id={index ? `tour-desc-${index}` : 'tour-desc'}
 								data-cy={index ? `tour-desc-${index}` : 'tour-desc'}
@@ -85,29 +79,24 @@ const Overview = ({
 						</React.Fragment>
 					) : (
 						<React.Fragment>
-							<TextSkeleton className='w-3/12' type='single' />
-							<TextSkeleton type='grouped' lines={isDesktop ? 12 : 7} wrapped textSize='text-sm' />
+							<TextSkeleton className='w-6/12 lg:w-3/12' as='description' type='single' />
+							<TextSkeleton as='description' type='grouped' lines={isDesktop ? 12 : 7} wrapped />
 						</React.Fragment>
 					)}
 				</div>
 				{showPrice && (
 					<React.Fragment>
 						{!isLoading && data ? (
-							<Title
-								id={index ? `tour-price-${index}` : 'tour-price'}
-								as='h3'
-								size='sm'
-								data-cy={index ? `tour-price-${index}` : 'tour-price'}
-							>
+							<span className='font-bold'>
 								Mulai dari:{' '}
 								{new Intl.NumberFormat('id-ID', {
 									style: 'currency',
 									currency: 'IDR',
 									minimumFractionDigits: 0,
 								}).format(data.price)}
-							</Title>
+							</span>
 						) : (
-							<TextSkeleton className='w-3/12' type='single' />
+							<TextSkeleton className='w-6/12 lg:w-3/12' as='description' type='single' />
 						)}
 					</React.Fragment>
 				)}

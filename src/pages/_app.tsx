@@ -8,6 +8,8 @@ import type { AppProps } from 'next/app';
 import Head from 'next/head';
 /** React */
 import React from 'react';
+/** Contexts */
+import { AuthProvider } from '@/contexts';
 /** Styles */
 import '@/styles/globals.css';
 /** Utils */
@@ -19,11 +21,13 @@ export default function App({ Component, pageProps }: AppProps) {
 			<Head>
 				<title>Ravel</title>
 			</Head>
-			<ThemeProvider theme={theme}>
-				<div className={INTER.className}>
-					<Component {...pageProps} />
-				</div>
-			</ThemeProvider>
+			<AuthProvider>
+				<ThemeProvider theme={theme}>
+					<div className={INTER.className}>
+						<Component {...pageProps} />
+					</div>
+				</ThemeProvider>
+			</AuthProvider>
 		</React.Fragment>
 	);
 }

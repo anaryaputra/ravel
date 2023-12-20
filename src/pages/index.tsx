@@ -1,146 +1,79 @@
 /**
  * Required external modules
  */
-/** Axios */
-import axios, { AxiosResponse } from 'axios';
 /** Clsx */
 import clsx from 'clsx';
 /** Formik */
-import { FormikProps, useFormik } from 'formik';
-/** Lodash */
-import upperFirst from 'lodash/upperFirst';
+import { Field as FormikField, Form, Formik, FormikHelpers } from 'formik';
 /** Next */
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-/** Nookies */
-import { parseCookies, setCookie } from 'nookies';
 /** React */
 import React from 'react';
 /** React Hot Toast */
-import toast, { Toaster } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 /** Yup */
 import * as yup from 'yup';
 /** Components */
-import { FormBox, FormButton, FormCheckbox, FormTextField } from '@/components';
+import { Button, Checkbox, Field, FormBox } from '@/components';
+/** Contexts */
+import { AuthContext } from '@/contexts';
 /** Hooks */
-import { useToast } from '@/hooks';
+import { useAuth } from '@/hooks';
 /** Images */
 import RavelLogo from 'public/assets/images/ravel-logo.svg';
 /** Types */
-import { LoginForm, UserAuthenticationData } from '@/types';
+import { LoginForm } from '@/types';
 
 /**
  * Login page.
  * @returns { JSX.Element } JSX.Element - Login page
  */
 const Login = (): JSX.Element => {
-	const userCookie: string = parseCookies(null).user;
-	const initialLoginValues: LoginForm = {
-		userId: userCookie ? JSON.parse(userCookie).userId : '',
-		password: userCookie ? JSON.parse(userCookie).password : '',
-		rememberMe: false,
-	};
+	const { user: userContext, accessToken } = React.useContext(AuthContext);
+	const { login } = useAuth();
 	const router = useRouter();
 
-	/**
-	 * Login validation schema
-	 */
-	const loginValidationSchema: yup.ObjectSchema<LoginForm> = yup.object({
+	/** Form initial values */
+	const initialValues: LoginForm = {
+		userId: userContext?.userId ?? '',
+		password: '',
+		rememberMe: false,
+	};
+
+	/** Form validation schema */
+	const validationSchema: yup.ObjectSchema<LoginForm> = yup.object({
 		userId: yup.string().required('User ID wajib diisi!'),
 		password: yup.string().required('Password wajib diisi!'),
-		rememberMe: yup.boolean(),
+		rememberMe: yup.boolean().required(),
 	});
 
 	/**
-	 * Formik handler
+	 * Handle login form submit
+	 * @param { LoginForm } values Object of login form values.
+	 * @param { FormikHelpers } FormikHelpers Object of formik helpers.
 	 */
-	const formik: FormikProps<LoginForm> = useFormik({
-		initialValues: initialLoginValues,
-		enableReinitialize: true,
-		validationSchema: loginValidationSchema,
-		onSubmit: (values) => {
-			login(values.userId, values.password)
-				.then(({ data }) => {
-					toast.dismiss();
+	const handleSubmit = async (values: LoginForm, { setFieldError }: FormikHelpers<LoginForm>): Promise<void> => {
+		const response = await login(values);
 
-					const userAuthenticationData: UserAuthenticationData = data.data;
-					const accessToken: string = userAuthenticationData.accessToken as string;
-					const user: string = JSON.stringify({
-						name: userAuthenticationData.name,
-						userId: values.userId,
-						password: values.password,
-						rememberMe: values.rememberMe,
-					});
-
-					setCookie(null, 'accessToken', accessToken, {
-						maxAge: 30 * 24 * 60 * 60,
-						path: '/',
-					});
-					setCookie(null, 'user', user, {
-						maxAge: 30 * 24 * 60 * 60,
-						path: '/',
-					});
-
-					useToast(`Selamat Datang, ${upperFirst(userAuthenticationData.name as string)}`, 'success');
-
-					router.push('/landing-page');
-				})
-				.catch((error) => {
-					toast.dismiss();
-
-					if (error.response) {
-						/**
-						 * The request was made and the server responded with a status code
-						 * that falls out of the range of 2xx
-						 */
-						if (error.response.data.error === 'Username & Password salah') {
-							const errorMessage = 'Id & password salah';
-							formik.setErrors({
-								userId: errorMessage,
-								password: errorMessage,
-							});
-							useToast(errorMessage, 'error');
-						}
-					} else if (error.request) {
-						/**
-						 * The request was made but no response was received
-						 * `error.request` is an instance of XMLHttpRequest in the browser
-						 * and an instance of http.ClientRequest in node.js
-						 */
-						console.error(error.request);
-						useToast('Request error', 'error');
-					} else {
-						/**
-						 * Something happened in setting up the request that triggered an Error
-						 */
-						console.error('Error', error.message);
-						useToast('Unexpected error', 'error');
-					}
-				});
-		},
-	});
-
-	/**
-	 * Login user.
-	 * @param { string } userId User account's ID.
-	 * @param { string } password User account's password.
-	 * @returns { Promise<UserAuthentication> } Login promise axios response
-	 */
-	const login = async (userId: string, password: string): Promise<AxiosResponse> => {
-		toast.loading('Mengautentikasi akun...');
-
-		const response = await axios.post(`${process.env.API_ENDPOINT}/auam/login`, {
-			userId: userId,
-			password: password,
-		});
-
-		return response;
+		if (response.success) {
+			router.push('/landing-page');
+		} else {
+			if (response?.error?.response?.status === 401) {
+				setFieldError('userId', 'Id & password salah');
+				setFieldError('password', 'Id & password salah');
+			}
+		}
 	};
+
+	React.useEffect(() => {
+		accessToken && router.push('/landing-page');
+	}, [accessToken]);
 
 	return (
 		<main className={clsx('grid h-screen w-screen grid-cols-1 lg:grid-cols-2')}>
-			<div className='bg-login hidden bg-cover lg:block' />
+			<div className='hidden bg-login bg-cover lg:block' />
 			<div className='flex items-center justify-center'>
 				<FormBox className='flex w-4/5 flex-col gap-y-4'>
 					<div className='flex justify-center'>
@@ -148,46 +81,46 @@ const Login = (): JSX.Element => {
 					</div>
 					<div className='flex flex-col gap-y-4'>
 						<h1 className='text-2xl font-semibold'>Masuk</h1>
-						<form className='flex flex-col gap-y-6' onSubmit={formik.handleSubmit} noValidate>
-							<FormTextField
-								id='userId'
-								label='User ID'
-								name='userId'
-								type='text'
-								required
-								defaultValue={formik.values.userId}
-								value={formik.values.userId}
-								onChange={formik.handleChange}
-								onBlur={formik.handleBlur}
-								error={formik.touched.userId && Boolean(formik.errors.userId)}
-								helperText={formik.touched.userId && formik.errors.userId}
-								data-cy='input-userId'
-							/>
-							<FormTextField
-								id='password'
-								label='Password'
-								name='password'
-								type='password'
-								required
-								defaultValue={formik.values.password}
-								value={formik.values.password}
-								onChange={formik.handleChange}
-								onBlur={formik.handleBlur}
-								error={formik.touched.password && Boolean(formik.errors.password)}
-								helperText={formik.touched.password && formik.errors.password}
-								data-cy='input-password'
-							/>
-							<FormCheckbox
-								id='rememberMe'
-								name='rememberMe'
-								label='Ingat Saya!'
-								onChange={formik.handleChange}
-								data-cy='input-remember_me'
-							/>
-							<FormButton type='submit' data-cy='btn-login'>
-								Login
-							</FormButton>
-						</form>
+						<Formik
+							initialValues={initialValues}
+							validationSchema={validationSchema}
+							enableReinitialize={true}
+							onSubmit={handleSubmit}
+						>
+							{(props) => (
+								<Form className='flex flex-col gap-y-6'>
+									<FormikField
+										id='userId'
+										name='userId'
+										label='User ID'
+										component={Field}
+										data-cy='input-userId'
+									/>
+									<FormikField
+										id='password'
+										name='password'
+										label='Password'
+										component={Field}
+										data-cy='input-password'
+									/>
+									<FormikField
+										id='rememberMe'
+										name='rememberMe'
+										label='Ingat Saya!'
+										component={Checkbox}
+										data-cy='input-remember_me'
+									/>
+									<Button
+										type='submit'
+										colorScheme='dark'
+										disabled={props.isSubmitting}
+										data-cy='btn-login'
+									>
+										Login
+									</Button>
+								</Form>
+							)}
+						</Formik>
 					</div>
 					<div className='flex flex-col gap-y-3'>
 						<span className='text-center text-sm font-semibold'>atau</span>

@@ -3,64 +3,58 @@
  */
 /** Next */
 import Image from 'next/image';
+import Link from 'next/link';
 /** React */
 import React from 'react';
 /** Components */
-import { Description, FormButton, Layout, Overview, Title, TopTours } from '@/components';
+import { Button, Description, Jumbotron, Layout, Overview, Title, TopTours } from '@/components';
+/** Hooks */
+import { useTour } from '@/hooks';
 /** Images */
-import JumbotronSrc from 'public/assets/images/landing-page-jumbotron.jpg';
 import TestimonySrc from 'public/assets/images/testimony-illustration.png';
-/** Services */
-import { getNewTour } from '@/services';
-import Link from 'next/link';
 
 /**
  * Landing page.
  * @returns { JSX.Element } JSX.Element - Landing page
  */
 const LandingPage = (): JSX.Element => {
+	const { fetchNewTour, fetchTop5Tour } = useTour();
+
 	/** Fetch new tour data */
-	const { data, isLoading } = getNewTour();
+	const { data: newTour, isLoading: newTourIsLoading, isValidating: newTourIsValidating } = fetchNewTour();
+	/** Fetch top 5 tour data */
+	const { data: top5Tour, isLoading: top5TourIsLoading, isValidating: top5TourIsValidating } = fetchTop5Tour();
 
 	return (
 		<Layout>
-			<div className='relative'>
-				<div className='absolute bottom-3 left-7 flex flex-col font-bold text-white lg:bottom-6 lg:left-14'>
-					<span className='text-xl lg:text-[40px]'>Ravel</span>
-					<span className='text-xs lg:text-2xl'>Travel Solution</span>
-				</div>
-				<Image
-					className='ascpect-jumbotron w-full'
-					src={JumbotronSrc}
-					alt='Ravel Travel Solution Jumbotron'
-					priority
-				/>
-			</div>
+			<Jumbotron src='/assets/images/landing-page-jumbotron.jpg' alt='Travel Destination Image' withText />
 			<div className='flex flex-col gap-y-14 py-7 lg:py-14'>
 				<Overview
 					id='header-new-tour'
 					className='px-7 lg:px-14'
-					data={data}
-					isLoading={isLoading}
+					data={newTour?.data}
+					isLoading={newTourIsLoading && newTourIsValidating}
 					sectionTitle={
-						<h2 className='text-2xl font-bold'>
+						<Title as='h5'>
 							Tujuan <span className='text-[#4BFF72]'>Baru</span>!
-						</h2>
+						</Title>
 					}
 					data-cy='header-new-tour'
 				/>
-				<TopTours id='top-5-tours' />
+				<TopTours
+					id='top-5-tours'
+					data={top5Tour?.data}
+					isLoading={top5TourIsLoading && top5TourIsValidating}
+				/>
 				<div className='flex flex-col gap-12 px-7 lg:flex-row lg:px-14'>
 					<Image src={TestimonySrc} alt='Testimony Illustration' height={333} width={448} />
 					<div className='flex flex-col justify-between gap-y-10'>
 						<div className='flex flex-col gap-y-8'>
 							<div className='flex flex-col'>
-								<Title as='h2' size='md'>
+								<Title as='h5'>
 									Experience Nomor <span className='text-[#4BFF72]'>Satu</span>!
 								</Title>
-								<Title as='h3' size='sm'>
-									Dipercaya Seluruh Dunia
-								</Title>
+								<Title as='h6'>Dipercaya Seluruh Dunia</Title>
 							</div>
 							<Description>
 								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vulputate erat sit
@@ -75,10 +69,10 @@ const LandingPage = (): JSX.Element => {
 								purus ut eros pretium, et auctor tellus accumsan. Etiam posuere suscipit mi ac aliquet.
 							</Description>
 						</div>
-						<Link id='btn-testimoni' href='/testimony' data-cy='btn-testimoni'>
-							<FormButton className='max-w-fit rounded-2xl bg-[#4BFF72] px-7 py-5 text-xl font-bold normal-case text-white'>
+						<Link id='btn-testimoni' href='/testimony' data-cy='btn-testimoni' passHref legacyBehavior>
+							<Button className='max-w-fit' colorScheme='light'>
 								{'Testimoni ->'}
-							</FormButton>
+							</Button>
 						</Link>
 					</div>
 				</div>
